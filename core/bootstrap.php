@@ -1,15 +1,15 @@
 <?php
 
 require 'Mutable.php';
-require 'MutableChildInterface.php';
 require 'MutableChild.php';
+require 'MutableChildBase.php';
 
 require 'MutationRecord.php';
 require 'Mutation.php';
 
-require 'Arr.php';
-require 'Flt.php';
-require 'Int.php';
-require 'Str.php';
+require 'types/Arr.php';
+require 'types/Flt.php';
+require 'types/Int.php';
+require 'types/Str.php';
 
 require 'TypeException.php';

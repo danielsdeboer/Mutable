@@ -4,7 +4,7 @@ class MutationRecord {
 
     /**
      * An object that conforms to the mutable child interface contract
-     * @var MutableChildInterface
+     * @var MutableChild
      */
     protected $mutableChild;
 
@@ -22,11 +22,11 @@ class MutationRecord {
 
     /**
      * Constructor
-     * @param MutableChildInterface $mutableChild
-     * @param string                $mutation
-     * @param array | null          $parameters
+     * @param MutableChild $mutableChild
+     * @param string $mutation
+     * @param array | null $parameters
      */
-    public function __construct(MutableChildInterface $mutableChild, $mutation, array $parameters)
+    public function __construct(MutableChild $mutableChild, $mutation, array $parameters)
     {
         $this->mutableChild = $mutableChild;
         $this->mutation = $mutation;
@@ -35,12 +35,12 @@ class MutationRecord {
 
     /**
      * Static constructor
-     * @param  MutableChildInterface $mutableChild
-     * @param  string                $mutation
-     * @param  array | null          $parameters
+     * @param  MutableChild $mutableChild
+     * @param  string $mutation
+     * @param  array | null $parameters
      * @return Mutation
      */
-    public static function make(MutableChildInterface $mutableChild, $mutation, $parameters)
+    public static function make(MutableChild $mutableChild, $mutation, $parameters)
     {
         return new self($mutableChild, $mutation, $parameters);
     }

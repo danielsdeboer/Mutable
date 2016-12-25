@@ -61,7 +61,7 @@ class Mutable
      * @param  array $params
      * @return void
      */
-    protected function record(MutableChildInterface $mutated, $method, $params)
+    protected function record(MutableChild $mutated, $method, $params)
     {
         $this->mutations[] = MutationRecord::make(
             $mutated,

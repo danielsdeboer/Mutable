@@ -2,7 +2,7 @@
 
 // namespace Str;
 
-class Arr extends MutableChild {
+class Arr extends MutableChildBase {
 
     /**
      * Validate the input

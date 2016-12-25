@@ -2,7 +2,7 @@
 
 // namespace Str;
 
-class Flt extends MutableChild {
+class Flt extends MutableChildBase {
 
     /**
      * Validate the input

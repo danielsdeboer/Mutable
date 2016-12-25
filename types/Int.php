@@ -2,7 +2,7 @@
 
 // namespace Str;
 
-class Int extends MutableChild {
+class Int extends MutableChildBase {
 
     /**
      * Validate the input
