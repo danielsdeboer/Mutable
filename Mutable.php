@@ -43,32 +43,23 @@ class Mutable
      * @param  array | null $params
      * @return $this
      */
-    protected function mutate($method, $params = null)
+    protected function mutate($mutation, $params = null)
     {
-        $this->record(
-            $this->$method($params),
-            $method,
-            $params
-        );
+        $mutation = ucfirst($mutation);
+
+        // Create is a separate case as there's no initial value
+        // to call $this->value() on
+        if ($mutation == 'Create') {
+            $this->mutations[] = $mutation::make(Null::make(null), [$params]);
+
+            return $this;
+        }
+
+        $this->mutations[] = $mutation::make($this->value(), $params);
 
         return $this;
     }
 
-    /**
-     * Record the mutation, enforcing the return of a MutableChild
-     * @param  MutableChild $mutated
-     * @param  string $method
-     * @param  array $params
-     * @return void
-     */
-    protected function record(MutableChild $mutated, $method, $params)
-    {
-        $this->mutations[] = MutationRecord::make(
-            $mutated,
-            $method,
-            is_array($params) ? $params : []
-        );
-    }
 
     ///////////////
     // MUTATIONS //
@@ -429,21 +420,22 @@ class Mutable
     /////////////
 
     /**
-     * Get the last value in the mutations array and call the get() method on it
+     * Get the last MutableChild
      * @return mixed
      */
     protected function value()
     {
-        return end($this->mutations)->value();
+        return end($this->mutations)->get();
     }
 
     /**
-     * Public alias for value()
+     * Get the last MutableChild's value
      * @return mixed
      */
     public function get()
     {
-        return $this->value();
+        $value = end($this->mutations)->get();
+        return $value->get();
     }
 
     /**

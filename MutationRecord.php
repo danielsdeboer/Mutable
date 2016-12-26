@@ -51,6 +51,6 @@ class MutationRecord {
      */
     public function value()
     {
-        return $this->mutableChild->get();
+        return $this->mutableChild;
     }
 }

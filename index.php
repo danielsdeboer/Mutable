@@ -3,7 +3,8 @@
 require 'core/bootstrap.php';
 
 $string = Mutable::make('string-string2')
-            ->unslug()
+            ->caps()
+            // ->mutations()
             ->get()
             ;
 
