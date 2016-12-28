@@ -2,6 +2,8 @@
 
 class Mutable
 {
+    use HandlesUnknownTypes;
+
     /**
      * The mutations list
      * @var array
@@ -45,6 +47,7 @@ class Mutable
      */
     protected function mutate($mutation, $params = null)
     {
+        // Mutations class names are in PascalCase
         $mutation = ucfirst($mutation);
 
         // Create is a separate case as there's no initial value
@@ -58,54 +61,6 @@ class Mutable
         $this->mutations[] = $mutation::make($this->value(), $params);
 
         return $this;
-    }
-
-
-    ///////////////
-    // MUTATIONS //
-    ///////////////
-
-    /**
-     * Creation mutation.
-     * @param  Object $parameter
-     * @return Object
-     */
-    protected function create($obj)
-    {
-        return $obj;
-    }
-
-    ////////////////////////////////
-    // STRING TO STRING MUTATIONS //
-    ////////////////////////////////
-
-    /**
-     * Convert string to uppercase
-     * @return string
-     */
-    protected function caps()
-    {
-        return $this->str($this->value());
-    }
-
-    /**
-     * Remove all instances of a string
-     * @param  string $string
-     * @return string
-     */
-    protected function remove($string)
-    {
-        return $this->str(str_replace($string, '', $this->value()));
-    }
-
-    /**
-     * Replace all instances of a string with another string
-     * @param  array $params
-     * @return string
-     */
-    protected function replace($params)
-    {
-        return $this->str(str_replace($params[0], $params[1], $this->value()));
     }
 
     protected function titleCase()
@@ -122,53 +77,6 @@ class Mutable
         $this->mutate('titlecase');
     }
 
-    ///////////////////////////////
-    // STRING TO ARRAY MUTATIONS //
-    ///////////////////////////////
-
-    /**
-     * Explode the string
-     * @param  string $delimiter
-     * @return Arr
-     */
-    protected function explode($params)
-    {
-        return $this->arr(explode($params[0], $this->value()));
-    }
-
-    ///////////////////////////////
-    // ARRAY TO STRING MUTATIONS //
-    ///////////////////////////////
-
-    protected function implode($params)
-    {
-        return $this->str(implode($params[0], $this->value()));
-    }
-
-    /////////////////////
-    // FLOAT TO STRING //
-    /////////////////////
-
-    protected function dollars()
-    {
-        $this->mutate('twoPlaces');
-
-        return $this->str('$' . $this->value());
-    }
-
-    ////////////////////
-    // FLOAT TO FLOAT //
-    ////////////////////
-
-    protected function round($places)
-    {
-        return $this->flt(round($this->value(), isset($places[0]) ? $places[0] : 2));
-    }
-
-    //////////////////
-    // FLOAT TO INT //
-    //////////////////
-
     protected function dollarsToCents()
     {
         $this->mutate('twoPlaces');
@@ -176,16 +84,6 @@ class Mutable
 
         return $this->int($this->toInt($this->value()));
     }
-
-    /////////////////////
-    // FLOAT TO STRING //
-    /////////////////////
-
-    protected function twoPlaces()
-    {
-        return $this->flt(number_format($this->value(), 2));
-    }
-
 
     //////////
     // MATH //
@@ -231,88 +129,9 @@ class Mutable
         return $this->intOrFlt( pow($this->value(), 1/$params[0]) );
     }
 
-    //////////////
-    // FUNCTION //
-    //////////////
-
-    protected function run($params)
-    {
-        $mutated = call_user_func($params[0], $this->value());
-
-        return $this->unknownType($mutated);
-    }
-
-    protected function map($params)
-    {
-        return $this->arr(array_map($params[0], $this->value()));
-    }
-
-
     //////////////////////////
     // NON-MUTATION HELPERS //
     //////////////////////////
-
-    /**
-     * For operations where int or float is ambiguous, test to see
-     * which mutable child should be returned.
-     * @param  mixed $value
-     * @return Int | Flt
-     */
-    protected function intOrFlt($value)
-    {
-        if (floor($value) == $value) {
-            return Int::make($this->toInt($value));
-        }
-
-        if ($this->isInt() && $this->isInt($value)) {
-            return Int::make($value);
-        }
-
-        return Flt::make($value);
-    }
-
-    /**
-     * If the return type is unknown, figure it out
-     * @param  mixed $value
-     * @return void
-     */
-    protected function unknownType($value)
-    {
-        switch (true) {
-            case $value === null:
-                $this->fail();
-                break;
-
-            case is_string($value):
-                return $this->str($value);
-                break;
-
-            case is_integer($value):
-                return $this->int($value);
-                break;
-
-            case is_float($value):
-                return $this->flt($value);
-                break;
-
-            case is_array($value):
-                return Arr::make($value);
-                break;
-
-            default:
-                $this->fail();
-                break;
-        }
-    }
-
-    /**
-     * Throw an exception for unacceptable types
-     * @return void
-     */
-    protected function fail()
-    {
-        throw new TypeException('The input must be a string, integer, float, or array.');
-    }
 
     /**
      * Cast to integer in non-mutation context
@@ -345,74 +164,6 @@ class Mutable
     protected function isFlt()
     {
         return is_float($this->value());
-    }
-
-    ////////////////////
-    // CHILD CREATORS //
-    ////////////////////
-
-    /**
-     * Create a new Str
-     * @param  string $value
-     * @return Str | mixed
-     */
-    protected function str($value)
-    {
-        try {
-            $str = Str::make($value);
-        } catch (Exception $e) {
-            $str = $this->unknownType($value);
-        }
-
-        return $str;
-    }
-
-    /**
-     * Create a new Int
-     * @param  int $value
-     * @return Int | mixed
-     */
-    protected function int($value)
-    {
-        try {
-            $int = Int::make($value);
-        } catch (Exception $e) {
-            $int = $this->unknownType($value);
-        }
-
-        return $int;
-    }
-
-    /**
-     * Create a new Flt
-     * @param  float $value
-     * @return Flt | mixed
-     */
-    protected function flt($value)
-    {
-        try {
-            $flt = Flt::make($value);
-        } catch (Exception $e) {
-            $flt = $this->unknownType($value);
-        }
-
-        return $flt;
-    }
-
-    /**
-     * Create a new Arr
-     * @param  array $value
-     * @return Arr | mixed
-     */
-    protected function arr($value)
-    {
-        try {
-            $arr = Arr::make($value);
-        } catch (Exception $e) {
-            $arr = $this->unknownType($value);
-        }
-
-        return $arr;
     }
 
     /////////////
@@ -456,17 +207,7 @@ class Mutable
      */
     public function __call($method, $params)
     {
-        if (method_exists($this, $method)) {
-            $this->mutate($method, $params);
-
-            return $this;
-        }
-
-        $metaMethod = 'meta' . ucfirst($method);
-
-        if (method_exists($this, $metaMethod)) {
-            $this->$metaMethod();
-        }
+        $this->mutate($method, $params);
 
         return $this;
     }

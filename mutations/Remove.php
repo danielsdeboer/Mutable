@@ -1,6 +1,6 @@
 <?php
 
-class Caps extends MutationBase {
+class Remove extends MutationBase {
 
     /**
      * Perform the mutation
@@ -9,7 +9,7 @@ class Caps extends MutationBase {
     public function run()
     {
         $this->out = $this->str(
-            strtoupper($this->in->get())
+            str_replace($this->params[0], '', $this->value())
         );
 
         return $this;

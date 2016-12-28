@@ -1,6 +1,6 @@
 <?php
 
-class Caps extends MutationBase {
+class Map extends MutationBase {
 
     /**
      * Perform the mutation
@@ -8,8 +8,8 @@ class Caps extends MutationBase {
      */
     public function run()
     {
-        $this->out = $this->str(
-            strtoupper($this->in->get())
+        $this->out = $this->arr(
+            array_map($this->params[0], $this->value())
         );
 
         return $this;

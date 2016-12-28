@@ -2,6 +2,8 @@
 
 abstract class MutationBase implements Mutation {
 
+    use HandlesUnknownTypes;
+
     protected $in;
     protected $out;
     protected $params;
@@ -28,6 +30,34 @@ abstract class MutationBase implements Mutation {
         $child = get_called_class();
 
         return (new $child($mutable, $params))->run();
+    }
+
+    /**
+     * For operations where int or float is ambiguous, test to see
+     * which mutable child should be returned.
+     * @param  mixed $value
+     * @return Int | Flt
+     */
+    protected function intOrFlt($value)
+    {
+        if (floor($value) == $value) {
+            return Int::make($this->toInt($value));
+        }
+
+        if ($this->isInt() && $this->isInt($value)) {
+            return Int::make($value);
+        }
+
+        return Flt::make($value);
+    }
+
+    /**
+     * Get the value of the MutableChild
+     * @return mixed
+     */
+    protected function value()
+    {
+        return $this->in->get();
     }
 
     /**

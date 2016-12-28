@@ -1,6 +1,6 @@
 <?php
 
-class Caps extends MutationBase {
+class TwoPlaces extends MutationBase {
 
     /**
      * Perform the mutation
@@ -9,7 +9,7 @@ class Caps extends MutationBase {
     public function run()
     {
         $this->out = $this->str(
-            strtoupper($this->in->get())
+            number_format($this->value(), 2)
         );
 
         return $this;
