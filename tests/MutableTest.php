@@ -198,5 +198,31 @@ class MutableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($output, '1.12');
     }
 
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_prepend_mutation_will_add_a_string_to_the_beginning_of_a_string()
+    {
+        $mutable = Mutable::make('test string')->prepend('this goes in front of the ');
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 'this goes in front of the test string');
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_dollars_mutation_rounds_and_prepends_a_float_with_a_dollar_sign()
+    {
+        $mutable = Mutable::make(2.223344)->dollars();
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, '$2.22');
+    }
+
 
 }

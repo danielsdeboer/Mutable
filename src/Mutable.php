@@ -2,6 +2,7 @@
 
 namespace Aviator\Mutable;
 
+use Aviator\Mutable\Interfaces\Mutation;
 use Aviator\Mutable\Mutations\Create;
 use Aviator\Mutable\Traits\HandlesUnknownTypes;
 use Aviator\Mutable\Types\Null;
@@ -54,20 +55,40 @@ class Mutable
      */
     protected function mutate($mutation, $params = null)
     {
-        // Create is a separate case as there's no initial value
-        // to call $this->value() on
-        if ($mutation == 'create') {
-            $this->specialCaseCreate($params);
+        if (array_key_exists($mutation, $this->specialCases)) {
+            $method = 'specialCase' . ucfirst($mutation);
+
+            $this->$method($params);
 
             return $this;
         }
 
-        // Generate the FQN
         $mutation = $this->fqn($mutation);
 
-        $this->mutations[] = $mutation::make($this->value(), $params);
+        $this->record(
+            $mutation::make($this->value(), $params)
+        );
 
         return $this;
+    }
+
+    /**
+     * Record the mutation, enforcing an instance of Mutation
+     * @param  Mutation $mutation
+     * @return void
+     */
+    protected function record(Mutation $mutation)
+    {
+        // If the mutation is a metamutation, it's going to return an array
+        if (is_array($mutation->get())) {
+            foreach ($mutation->get() as $item) {
+                $this->mutations[] = $item;
+            }
+
+            return;
+        }
+
+        $this->mutations[] = $mutation;
     }
 
     /**
