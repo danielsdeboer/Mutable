@@ -11,6 +11,15 @@ class Mutable
     use HandlesUnknownTypes;
 
     /**
+     * Any mutations that have their own method to handle
+     * special cases
+     * @var array
+     */
+    protected $specialCases = [
+        'create' => true,
+    ];
+
+    /**
      * The mutations list
      * @var array
      */

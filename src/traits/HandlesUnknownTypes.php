@@ -14,7 +14,7 @@ trait HandlesUnknownTypes {
      * @param  mixed $value
      * @return void
      */
-    protected function unknownType($value)
+    public function unknownType($value)
     {
         switch (true) {
             case $value === null:
