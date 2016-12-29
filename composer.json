@@ -1,0 +1,20 @@
+{
+    "name": "aviator/mutable",
+    "description": "Type mutator with audit trail",
+    "type": "library",
+    "require": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel S. Deboer",
+            "email": "daniel.s.deboer@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aviator\\Mutable\\": "./src"
+        }
+    }
+}
