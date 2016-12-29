@@ -26,7 +26,6 @@ class MutableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Mutable::make
      * @group mutable
      * @test
      */
@@ -38,7 +37,6 @@ class MutableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Mutable::get
      * @group mutable
      * @test
      */
@@ -52,7 +50,6 @@ class MutableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Mutable::mutations
      * @group mutable
      * @test
      */
