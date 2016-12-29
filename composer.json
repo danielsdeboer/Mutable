@@ -16,5 +16,10 @@
         "psr-4": {
             "Aviator\\Mutable\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aviator\\Mutable\\Tests\\": "tests"
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aviator\Mutable;
+namespace Aviator\Mutable\Tests;
 
 use Aviator\Mutable\Mutable;
 use Aviator\Mutable\Mutations\Caps;
