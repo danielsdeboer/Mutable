@@ -1,5 +1,7 @@
 <?php
 
+namespace Aviator\Mutable;
+
 use Aviator\Mutable\Mutable;
 use Aviator\Mutable\Mutations\Caps;
 use Aviator\Mutable\Mutations\Create;
