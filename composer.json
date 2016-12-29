@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Aviator\\Mutable\\": "./src"
+            "Aviator\\Mutable\\": "src"
         }
     }
 }

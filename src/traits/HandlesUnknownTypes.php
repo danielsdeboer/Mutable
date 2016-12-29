@@ -12,15 +12,11 @@ trait HandlesUnknownTypes {
     /**
      * If the return type is unknown, figure it out
      * @param  mixed $value
-     * @return void
+     * @return mixed
      */
     public function unknownType($value)
     {
         switch (true) {
-            case $value === null:
-                $this->fail();
-                break;
-
             case is_string($value):
                 return $this->str($value);
                 break;
@@ -39,7 +35,6 @@ trait HandlesUnknownTypes {
 
             default:
                 $this->fail();
-                break;
         }
     }
 
@@ -57,11 +52,11 @@ trait HandlesUnknownTypes {
      * @param  string $value
      * @return Str | mixed
      */
-    protected function str($value)
+    public function str($value)
     {
         try {
             $str = Str::make($value);
-        } catch (Exception $e) {
+        } catch (TypeException $e) {
             $str = $this->unknownType($value);
         }
 
@@ -73,11 +68,11 @@ trait HandlesUnknownTypes {
      * @param  int $value
      * @return Int | mixed
      */
-    protected function int($value)
+    public function int($value)
     {
         try {
             $int = Int::make($value);
-        } catch (Exception $e) {
+        } catch (TypeException $e) {
             $int = $this->unknownType($value);
         }
 
@@ -89,11 +84,11 @@ trait HandlesUnknownTypes {
      * @param  float $value
      * @return Flt | mixed
      */
-    protected function flt($value)
+    public function flt($value)
     {
         try {
             $flt = Flt::make($value);
-        } catch (Exception $e) {
+        } catch (TypeException $e) {
             $flt = $this->unknownType($value);
         }
 
@@ -105,11 +100,11 @@ trait HandlesUnknownTypes {
      * @param  array $value
      * @return Arr | mixed
      */
-    protected function arr($value)
+    public function arr($value)
     {
         try {
             $arr = Arr::make($value);
-        } catch (Exception $e) {
+        } catch (TypeException $e) {
             $arr = $this->unknownType($value);
         }
 
@@ -122,7 +117,7 @@ trait HandlesUnknownTypes {
      * @param  int | float $value
      * @return Int | Flt
      */
-    protected function numeric($value)
+    public function numeric($value)
     {
         if (floor($value) == $value) {
             return $this->int((int) $value);

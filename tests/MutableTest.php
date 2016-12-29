@@ -3,6 +3,8 @@
 use Aviator\Mutable\Mutable;
 use Aviator\Mutable\Mutations\Caps;
 use Aviator\Mutable\Mutations\Create;
+use Aviator\Mutable\Types\Flt;
+use Aviator\Mutable\Types\Int;
 use Aviator\Mutable\Types\Str;
 
 class MutableTest extends \PHPUnit_Framework_TestCase
@@ -263,5 +265,107 @@ class MutableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($output, 123);
     }
 
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_times_mutation_multiplies_a_number_by_a_number_and_returns_an_int_or_float()
+    {
+        $mutable = Mutable::make(2);
+        $mutableFloat = Mutable::make(2);
+
+        $timesInt = $mutable->times(101);
+        $timesFloat = $mutableFloat->times(101.1);
+
+        $intOutput = $timesInt->get();
+        $intType = $timesInt->value();
+
+        $floatOutput = $timesFloat->get();
+        $floatType = $timesFloat->value();
+
+        $this->assertSame($intOutput, 202);
+        $this->assertInstanceOf(Int::class, $intType);
+
+        $this->assertSame($floatOutput, 202.2);
+        $this->assertInstanceOf(Flt::class, $floatType);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_minus_mutation_subtracts_a_number_from_a_number()
+    {
+        $mutable = Mutable::make(22)->minus(2);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 20);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_plus_mutation_adds_a_number_to_a_number()
+    {
+        $mutable = Mutable::make(22)->plus(5);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 27);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_div_by_mutation_divides_the_input_by_a_number()
+    {
+        $mutable = Mutable::make(10)->divBy(2);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 5);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_div_into_mutation_divides_the_input_into_a_number()
+    {
+        $mutable = Mutable::make(10)->divInto(50);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 5);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_power_mutation_returns_the_power_of_a_number()
+    {
+        $mutable = Mutable::make(2)->power(5);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 32);
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_root_mutation_returns_the_root_of_a_number()
+    {
+        $mutable = Mutable::make(8)->root(3);
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 2);
+    }
 
 }

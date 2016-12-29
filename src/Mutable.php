@@ -135,7 +135,7 @@ class Mutable
      * Get the last Type
      * @return mixed
      */
-    protected function value()
+    public function value()
     {
         return end($this->mutations)->get();
     }
