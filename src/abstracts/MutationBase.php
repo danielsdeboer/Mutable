@@ -39,25 +39,6 @@ abstract class MutationBase implements Mutation {
     }
 
     /**
-     * For operations where int or float is ambiguous, test to see
-     * which Typeshould be returned.
-     * @param  mixed $value
-     * @return Int | Flt
-     */
-    protected function intOrFlt($value)
-    {
-        if (floor($value) == $value) {
-            return $this->int($this->toInt($value));
-        }
-
-        if ($this->isInt() && $this->isInt($value)) {
-            return $this->int($value);
-        }
-
-        return $this->flt($value);
-    }
-
-    /**
      * Get the value of the MutableChild
      * @return mixed
      */

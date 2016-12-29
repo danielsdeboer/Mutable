@@ -224,5 +224,44 @@ class MutableTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($output, '$2.22');
     }
 
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_title_case_mutation_transforms_a_string_to_title_case()
+    {
+        $mutable = Mutable::make('a test string')->titleCase();
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 'A Test String');
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_unslug_mutation_transforms_a_slug_into_a_title_cased_string()
+    {
+        $mutable = Mutable::make('a-test-slug')->unslug();
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 'A Test Slug');
+    }
+
+    /**
+     * @group mutable
+     * @test
+     */
+    public function the_cents_mutation_transforms_a_float_into_a_cent_value_integer()
+    {
+        $mutable = Mutable::make(1.234)->cents();
+
+        $output = $mutable->get();
+
+        $this->assertSame($output, 123);
+    }
+
 
 }

@@ -81,14 +81,30 @@ class Mutable
     {
         // If the mutation is a metamutation, it's going to return an array
         if (is_array($mutation->get())) {
-            foreach ($mutation->get() as $item) {
-                $this->mutations[] = $item;
-            }
+            $this->recordMutationsFromArray($mutation->get());
 
             return;
         }
 
         $this->mutations[] = $mutation;
+    }
+
+    /**
+     * Record an array of mutations.
+     *
+     * This method is recursive, as it calls $this->record which
+     * can call $this->recordMutationsFromArray() again.
+     *
+     * This is useful in cases where a MetaMutation contains a
+     * MetaMutation.
+     * @param  array  $mutations
+     * @return void
+     */
+    protected function recordMutationsFromArray(array $mutations)
+    {
+        foreach ($mutations as $mutation) {
+            $this->record($mutation);
+        }
     }
 
     /**

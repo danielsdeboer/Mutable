@@ -1,41 +1,5 @@
 <?php
 
-protected function titleCase()
-{
-    $this->mutate('explode', [' ']);
-    $this->mutate('map', ['ucfirst']);
-
-    return $this->str(implode($this->value(), ' '));
-}
-
-protected function metaUnslug()
-{
-    $this->mutate('replace', ['-', ' ']);
-    $this->mutate('titlecase');
-}
-
-protected function dollarsToCents()
-{
-    $this->mutate('twoPlaces');
-    $this->mutate('times', [100]);
-
-    return $this->int($this->toInt($this->value()));
-}
-
-//////////
-// MATH //
-//////////
-
-/**
- * Perform a multiplication operation
- * @param  array $params
- * @return Int | Float
- */
-protected function times($params)
-{
-    return $this->intOrFlt($this->value() * $params[0]);
-}
-
 protected function minus($params)
 {
     return $this->intOrFlt($this->value() - $params[0]);

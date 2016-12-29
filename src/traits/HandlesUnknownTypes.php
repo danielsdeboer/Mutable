@@ -115,4 +115,19 @@ trait HandlesUnknownTypes {
 
         return $arr;
     }
+
+    /**
+     * For operations where int or float is ambiguous, test to see
+     * which Type should be returned.
+     * @param  int | float $value
+     * @return Int | Flt
+     */
+    protected function numeric($value)
+    {
+        if (floor($value) == $value) {
+            return $this->int((int) $value);
+        }
+
+        return $this->flt($value);
+    }
 }
